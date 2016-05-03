@@ -10,8 +10,9 @@ char vij(char key[], FILE *f1, FILE *f2)
     
     while (!feof(f1)){
         if (fread(&c,1,1,f1)){
-            if ((c >= 'a')&&(c <= 'z')){
-                if ( (c+key[cur]-'a') <= 'z') c = c+key[cur]-'a';
+            if ((c >= 'A')&&(c <= 'z')){
+                if ( (c+key[cur]-'A') <= 'z') 
+                	c = c+key[cur]-'A';
                  else
                     c = key[cur]+c-('z'+1);
                 fprintf(f2,"%c",c);   
@@ -29,16 +30,20 @@ char vij(char key[], FILE *f1, FILE *f2)
     fclose(f2);
 
    
-    f1=fopen("output.txt","r");
-    f2=fopen("output2.txt","w");
-    cur=0;
+    f1 = fopen("output.txt","r");
+    f2 = fopen("output2.txt","w");
+    cur = 0;
     while (!feof(f1)){
         if (fread(&c,1,1,f1)){
-            if ((c>=97)&&(c<=122)){
-                if ( (c-key[cur]+97)>=97) c=c-key[cur]+97; else
-                    c=c-key[cur]+123;
-                fprintf(f2,"%c",c);   
-                if (cur<strlen(key)-1) ++cur; else cur=0;
+            if ((c >= 'A') && (c <= 'z')){
+                if ( (c-key[cur]+'A') >= 'A') 
+                	c = c-key[cur]+'A'; 
+                else
+                    c = c-key[cur]+('z'+1);
+                	fprintf(f2,"%c",c);   
+                if (cur < strlen(key)-1) 
+                	++cur; 
+                else cur = 0;
             }
         }
     }
