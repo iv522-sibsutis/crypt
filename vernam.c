@@ -28,3 +28,23 @@ char *vernam_crypt(char *text, FILE *stream)
 	free(key);
 	return text;
 }
+
+char *vernam_decrypt(char *crypt, FILE *stream)
+{
+	int i = 0;
+	char *key = calloc(strlen(crypt) + 1, sizeof(char));
+	
+	while (1) {
+		const char c = fgetc(stream);
+		
+		if (feof(stream))
+			break;
+		key[i] = c;
+		i++;
+	}
+	if (strlen(key) < strlen(crypt))
+		return NULL;
+	for (i = 0; i < strlen(crypt) - 1; i++)
+		crypt[i] = crypt[i] ^ key[i];
+	return crypt;
+}
