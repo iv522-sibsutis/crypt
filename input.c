@@ -23,3 +23,23 @@ int output(char *text)
 	fclose(stream);
 	return 0;
 }
+
+char *reading(FILE *stream)
+{
+	fseek(stream, 0, SEEK_END);
+	int size = ftell(stream);
+	char *mas = calloc(size + 1, sizeof(char));
+	
+	fseek(stream, 0, SEEK_SET);
+	int i = 0;
+	
+	while(1) {
+		const char c = fgetc(stream);
+		
+		if (feof(stream))
+			break;
+		mas[i] = c;
+		i++;
+	}
+	return mas;
+}
