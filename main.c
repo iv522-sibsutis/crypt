@@ -6,25 +6,25 @@ int main()
 {
 	int inp = 0;
 	FILE *f1;
-    FILE *f2;
-    char key[100];
+	FILE *f2;
+	char key[100];
 	char fname[100];
-	
-	f2=fopen("output.txt","w");
+	char *crypt;
+
+	printf("Input file name: ");
+	scanf("%s", fname);
     
-    printf("Input file name: ");
-    scanf("%s",fname);
-    
-    f1=fopen(fname,"r");
-    if (f1==NULL) {
-        printf("file not found\n");
-        return 0;
-    }
-    
-    inp = input();
-       printf("\nINP=%d\n", inp);
-    switch (inp)
-    {
+	f1 = fopen(fname,"r");
+	if (f1 == NULL) {
+        	printf("file not found\n");
+        	return 0;
+	}
+
+	inp = input();
+	printf("\nINP = %d\n", inp);
+	char *text = reading(f1);
+	switch (inp)
+	{
     	case 1:
     		printf("Ключ (слово до 99 букв): ");
     			scanf("%s",key);
@@ -60,11 +60,12 @@ int main()
     		break;
    	//	case 4:
     	//	break;
-    */ default:
-            printf( "Неправильный ввод.\n" );
-    }
-    printf("Ваш результат находится в файле output.txt \n");
-
+		default:
+			printf( "Неправильный ввод.\n" );
+	}
+	output(crypt);
+	printf("Ваш результат находится в файле output.txt \n");
+	free(text);
 	return 0;	
 }
 
