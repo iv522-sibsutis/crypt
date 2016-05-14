@@ -12,6 +12,9 @@ vij.o: vijinera_encrypt.c
 	
 vij.o: vijinera_decrypt.c
 	gcc -c vijinera_decrypt.c
+
+vernam.o: vernam.c
+	gcc -c vernam.c
 		
 .PHONY: clean
 clean:
