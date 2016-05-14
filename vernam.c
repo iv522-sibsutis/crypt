@@ -46,5 +46,6 @@ char *vernam_decrypt(char *crypt, FILE *stream)
 		return NULL;
 	for (i = 0; i < strlen(crypt) - 1; i++)
 		crypt[i] = crypt[i] ^ key[i];
+	free(key);
 	return crypt;
 }
