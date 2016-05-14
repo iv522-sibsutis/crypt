@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "crypt.h"
 
 
@@ -7,10 +8,12 @@ int main()
 	int inp = 0;
 	FILE *f1;
 	FILE *f2;
+	FILE *f3;
 	char key[100];
 	char fname[100];
 	char *crypt;
 
+	f2 = fopen("output.txt","w");
 	printf("Input file name: ");
 	scanf("%s", fname);
     
