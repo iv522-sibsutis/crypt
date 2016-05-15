@@ -1,5 +1,5 @@
-crypt: main.o input.o vijinera_encrypt.o vijinera_decrypt.o
-	gcc -o crypt main.o input.o vijinera_encrypt.o vijinera_decrypt.o
+crypt: main.o input.o vijinera_encrypt.o vijinera_decrypt.o vernam.o
+	gcc -o crypt main.o input.o vijinera_encrypt.o vijinera_decrypt.o vernam.o
 
 main.o: main.c
 	gcc -c main.c
