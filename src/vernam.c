@@ -2,50 +2,66 @@
 #include <stdlib.h>
 #include <string.h>
 
-char *vernam_crypt(char *text, FILE *stream)
+unsigned int ELFHash(char *key, unsigned int mod)
+{
+	unsigned int h = 0, g;
+	
+	while (*key) {
+		h = (h << 4) + *key++;
+		g = h & 0xf0000000L;
+		if (g)
+			h ^= g >> 24;
+		h &= ~g;
+	}
+	return h % mod;
+}
+
+char *key_generation(char *key, int size)
+{
+	int i = 0, s = strlen(key);
+	unsigned int h = ELFHash(key, 128);
+	
+	for (i = s; i < size; i++) {
+		if (i == size - 1 && key[i] == '\n')
+			break;
+		key[i] = key[i - s] ^ h;
+		if (key[i] == 0)
+			key[i] ^= h;
+		h = ELFHash(key, 128);
+	}
+	return key;
+}
+
+char *vernam_crypt(char *text, char *key)
 {
 	int i = 0;
 	int size = strlen(text);
-	char *key = calloc(size + 1, sizeof(char));
 	
-	while (1) {
-		const char c = fgetc(stream);
-		
-		if (feof(stream))
+	if (strlen(key) < size)
+		key = key_generation(key, size);
+	while (i < size) {
+		if (i == size - 1 && text[i] == '\n')
 			break;
-		key[i] = c;
-		i++;
-	}
-	if (strlen(key) < strlen(text))
-		return NULL;
-	for (i = 0; i < size - 1; i++) {
 		if (text[i] == key[i])
 			key[i] = key[i] - 1;
 		text[i] = text[i] ^ key[i];
+		i++;
 	}
-	fseek(stream, 0, SEEK_SET);
-	fprintf(stream, "%s", key);
-	free(key);
 	return text;
 }
 
-char *vernam_decrypt(char *crypt, FILE *stream)
+char *vernam_decrypt(char *crypt, char *key)
 {
 	int i = 0;
-	char *key = calloc(strlen(crypt) + 1, sizeof(char));
 	
-	while (1) {
-		const char c = fgetc(stream);
-		
-		if (feof(stream))
-			break;
-		key[i] = c;
-		i++;
-	}
 	if (strlen(key) < strlen(crypt))
 		return NULL;
-	for (i = 0; i < strlen(crypt) - 1; i++)
+	while (i < strlen(crypt)) {
+		if (i == strlen(crypt) - 1 && crypt[i] == '\n')
+			break;
 		crypt[i] = crypt[i] ^ key[i];
-	free(key);
+		i++;
+	}
 	return crypt;
 }
+
