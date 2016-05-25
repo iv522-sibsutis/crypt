@@ -2,15 +2,23 @@
 #include <stdlib.h>
 #include <string.h>
 #include "crypt.h"
+//#include <gtk/gtk.h>
 
 
 int main()
 {
-	int i, inp = 0;
+	int i, inp = 0, val;
 	FILE *f1, *f2, *fkey;
 	char key[100], fname[100], file_key[100];;
 	char *crypt;
-
+	
+	/*gtk_init(&argc, &argv);
+	GtkWidget *window;
+	window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+	gtk_window_set_title(GTK_WINDOW(window), "window");
+	gtk_container_set_border_width (GTK_CONTAINER(window), 50);
+	gtk_widget_show_all(window);*/
+	
 	f2 = fopen("output.txt","w");
 	printf("Input file name: ");
 	scanf("%s", fname);
@@ -27,9 +35,14 @@ int main()
 	switch (inp)
 	{
 		case 1:
-			printf("Ключ (слово до 99 букв): ");
-			scanf("%s",key);
-			vij(key, f1, f2);
+			printf("Зашифровать - 1, расшифровать - 2\n");
+    			scanf("%d", &val);
+    		printf("Ключ (слово до 99 букв): ");
+    			scanf("%s", &key);
+    		if (val == 1)
+    	    	crypt = vijinera_encrypt(key, text);
+    		   else if (val == 2)
+    		   	crypt = vijinera_decrypt(key, text); 
 			break;
 	//	case 2:
 	//		break;
@@ -62,6 +75,10 @@ int main()
 	printf("Ваш результат находится в файле output.txt \n");
 	fclose(f1);
 	free(text);
+	
+	/*g_signal_connect(G_OBJECT(window),"destroy", G_CALLBACK(gtk_main_quit), NULL);
+	gtk_main();*/
+	
 	return 0;
 }
 
