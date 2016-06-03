@@ -8,6 +8,7 @@
 int main()
 {
 	int i, inp = 0, val;
+	int rotatorN;
 	FILE *f1, *f2, *fkey;
 	char key[100], fname[100], file_key[100];;
 	char *crypt;
@@ -44,8 +45,16 @@ int main()
     		   else if (val == 2)
     		   	crypt = vijinera_decrypt(key, text); 
 			break;
-	//	case 2:
-	//		break;
+		case 2:
+			printf("Зашифровать - 1, расшифровать - 2\n");
+    			scanf("%d", &val);
+    			printf("Ключ (число от > 0): ");
+    			scanf("%d", &rotatorN);
+			if (val == 1)
+				crypt = cezar_crypt(rotatorN, text);
+			else if (val == 2)
+    		   		crypt = cezar_decrypt(rotatorN, text); 
+			break;
 		case 3:
 			i = vernam_input(file_key);
 			fkey = fopen(file_key, "r+");
