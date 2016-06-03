@@ -24,31 +24,29 @@
   	GtkWidget *tbKey;
   	GtkWidget *lbKey;
   	
+  	GtkWidget *lbInf;
+  	
 //gtk_widget_set_sensitive (GTK_TOGGLE_BUTTON (cr1), FALSE);
-static void destroy(GtkWidget *widget,gpointer   data)
-{
-    gtk_main_quit ();
-}
 
 void alg1_checked(GtkWidget *widget, gpointer data) {
 
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (alg2), FALSE);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (alg3), FALSE);
-	gtk_label_set_text(GTK_LABEL(lbKey), "Alg1 TextKey");
+	gtk_label_set_text(GTK_LABEL(lbKey), "Enter key[a-z]:");
 }
 
 void alg2_checked(GtkWidget *widget, gpointer data) {
 
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (alg1), FALSE);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (alg3), FALSE);
-	gtk_label_set_text(GTK_LABEL(lbKey), "Alg2 TextKey");
+	gtk_label_set_text(GTK_LABEL(lbKey), "Enter key[0-99]:");
 }
 
 void alg3_checked(GtkWidget *widget, gpointer data) {
 
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (alg1), FALSE);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (alg2), FALSE);
-	gtk_label_set_text(GTK_LABEL(lbKey), "Alg3 TextKey");
+	gtk_label_set_text(GTK_LABEL(lbKey), "Enter key-file:");
 }
 
 void cr1_checked(GtkWidget *widget, gpointer data) {
@@ -62,88 +60,93 @@ void cr2_checked(GtkWidget *widget, gpointer data) {
 }
 
 void start_clicked(GtkWidget *widget, gpointer data) 
-{
-    
-    
-	g_print("%s",gtk_entry_get_text (GTK_ENTRY (tbFilePath)));
-	/*
-  //printf ("Entry contents: %s\n", entry_text);
-	
-	f2 = fopen("output.txt","w");
-	
-	//printf("Input file name: ");
-	//scanf("%s", fname);
-
-	f1 = fopen("","r");
-	if (f1 == NULL) {
-		//printf("file not found\n");
-	 	return 0;
-	}
-
-	inp = input();
-	
-	char *text = reading(f1);
-	switch (inp)
+{    
+	FILE *f1, *f2, *fkey;
+	char *key = gtk_entry_get_text (GTK_ENTRY (tbKey));
+	gtk_label_set_text(GTK_LABEL(lbInf), "");
+	f1 = fopen(gtk_entry_get_text (GTK_ENTRY (tbFilePath)),"r");
+	char *crypt;
+	if (f1 == NULL) 
 	{
-		case 1:
-			//printf("Зашифровать - 1, расшифровать - 2\n");
-    			//scanf("%d", &val);
-    		//printf("Ключ (слово до 99 букв): ");
-    			//scanf("%s", &key);
-    		if (val == 1)
+		gtk_label_set_text(GTK_LABEL(lbInf), "File not found!");
+	 	return;
+	}
+	char *text = reading(f1);
+	
+	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(alg1)))
+	{
+    		if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(cr1)))
     	    	crypt = vijinera_encrypt(key, text);
-    		   else if (val == 2)
+    		else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(cr2)))
     		   	crypt = vijinera_decrypt(key, text); 
-			break;
-		case 2:
-			//printf("Зашифровать - 1, расшифровать - 2\n");
-    			//scanf("%d", &val);
-    			//printf("Ключ (число от > 0): ");
-    			//scanf("%d", &rotatorN);
-			if (val == 1)
-				crypt = cezar_crypt(rotatorN, text);
-			else if (val == 2)
-    		   		crypt = cezar_decrypt(rotatorN, text); 
-			break;
-		case 3:
-			i = vernam_input(file_key);
-			fkey = fopen(file_key, "r+");
+    		else
+				gtk_label_set_text(GTK_LABEL(lbInf), "Arguments error!");
+    }
+	else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(alg2)))
+	{
+    		if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(cr1)))
+				crypt = cezar_crypt(atoi(key), text);
+    		else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(cr2)))
+    			crypt = cezar_decrypt(atoi(key), text); 
+    		else
+				gtk_label_set_text(GTK_LABEL(lbInf), "Arguments error!");
+    }
+	else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(alg3)))
+	{
+			fkey = fopen(key, "r+");
 			char *k = reading(fkey);
-			if (i == 1) {
+    		if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(cr1)))
+    		{
 				k = realloc(k, strlen(text) * sizeof(char));
 				crypt = vernam_crypt(text, k);
 				output(k, fkey);
 			}
-			else if (i == 2)
+    		else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(cr2)))
+    		{
 				crypt = vernam_decrypt(text, k);
-			else {
-				//printf("Неправильный ввод.\n");
+			}
+			else 
+			{
+				gtk_label_set_text(GTK_LABEL(lbInf), "Arguments error!");
 				exit(EXIT_FAILURE);
 			}
-			if (crypt == NULL) {
+			if (crypt == NULL) 
+			{
 				//printf("Ошибка. Длина ключа не соответствует длине текста.\n");
+				gtk_label_set_text(GTK_LABEL(lbInf), "Key error!");
 				exit(EXIT_FAILURE);
 			}
-		break;
-
-		default:
-			//printf( "Неправильный ввод.\n" );
-			break;
-	}
-	output(crypt, f2);
+		}
+		else
+		{
+				gtk_label_set_text(GTK_LABEL(lbInf), "Arguments error!");
+				return;
+		}
+		if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(cr1)))
+		{
+			f2 = fopen("output.enc.txt","w");
+			output(crypt, f2);
+			gtk_label_set_text(GTK_LABEL(lbInf), "Result in file 'output.enc.txt'!");
+		}
+		else if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(cr2)))
+		{
+			f2 = fopen("output.dec.txt","w");
+			output(crypt, f2);
+			gtk_label_set_text(GTK_LABEL(lbInf), "Result in file 'output.dec.txt'!");
+		}
 	//printf("Ваш результат находится в файле output.txt \n");
 	fclose(f1);
-	free(text);*/
+	free(text);
 }
 
 int main(int argc, char *argv[])
 {
+/*
 	int i, inp = 0, val;
 	int rotatorN;
-	FILE *f1, *f2, *fkey;
 	char key[100], fname[100], file_key[100];
 	char *crypt;
-  
+  */
   gtk_init(&argc, &argv);
 
   window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
@@ -199,14 +202,12 @@ int main(int argc, char *argv[])
   gtk_fixed_put(GTK_FIXED(fixed), cr2, 190, 160);
   gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(cr2), FALSE);
   
-  //if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(cr1)))
-  
   g_signal_connect(G_OBJECT(cr1), "clicked", 
     G_CALLBACK(cr1_checked), NULL);
   g_signal_connect(G_OBJECT(cr2), "clicked", 
     G_CALLBACK(cr2_checked), NULL);
       
-  lbKey = gtk_label_new ("Select action:");
+  lbKey = gtk_label_new ("Key:");
   gtk_fixed_put(GTK_FIXED(fixed), lbKey, 10, 190);
   gtk_widget_set_size_request(lbKey, 320, 20);
       
@@ -219,6 +220,10 @@ int main(int argc, char *argv[])
   gtk_fixed_put(GTK_FIXED(fixed), btStart, 200, 260);
   gtk_widget_set_size_request(btStart, 130, 50);
   g_signal_connect(G_OBJECT(btStart), "clicked", G_CALLBACK(start_clicked), NULL);
+  
+  lbInf = gtk_label_new ("");
+  gtk_fixed_put(GTK_FIXED(fixed), lbInf, 10, 320);
+  gtk_widget_set_size_request(lbInf, 320, 50);
   
   g_signal_connect(G_OBJECT(window), "destroy", 
       G_CALLBACK(gtk_main_quit), NULL);
