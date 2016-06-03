@@ -29,15 +29,15 @@ clean:
 all: $(BIN)/crypt $(BIN)/crypt_test
 
 $(BIN)/crypt: $(OBJ_SRC)
-	gcc $^ -o $@
+	gcc $^ -o $@ `pkg-config --cflags --libs gtk+-3.0`
 
 $(BIN)/crypt_test: $(OBJ_TEST)
-	gcc $^ -o $@
+	gcc $^ -o $@ `pkg-config --cflags --libs gtk+-3.0`
 
 -include $(DEPENDS)
 
 $(OBJ)/src/%.o: $(SRC)/%.c
-	gcc -c -Wall -g -O0 -MP -MMD $(addprefix -I ,$(SOURCE_DIRS)) $< -o $@
+	gcc -c -Wall -g -O0 -MP -MMD $(addprefix -I ,$(SOURCE_DIRS)) $< -o $@ `pkg-config --cflags --libs gtk+-3.0`
 
 $(OBJ)/test/%.o: $(TEST)/%.c
-	gcc -c -Wall -g -O0 -MP -MMD $(addprefix -I ,$(SOURCE_DIRS)) $< -o $@ 
+	gcc -c -Wall -g -O0 -MP -MMD $(addprefix -I ,$(SOURCE_DIRS)) $< -o $@ `pkg-config --cflags --libs gtk+-3.0` 
