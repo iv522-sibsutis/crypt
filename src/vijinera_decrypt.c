@@ -10,8 +10,8 @@ char* vijinera_decrypt(char key[], char* text)
     int i;
 	int l = strlen(c); 
 	
-	for(i=0; i<l; i++){
-		if ((c[i] >= 'A') && (c[i] <= 'z')){
+	for(i=0; i<l; i++) {
+		if ((c[i] >= 'A') && (c[i] <= 'z')) {
 			if ( (c[i]-key[cur]+'A') >= 'A') 
 				c[i] = c[i]-key[cur]+'A'; 
 			else
