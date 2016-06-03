@@ -12,12 +12,12 @@ char *cezar_crypt(int rotatorN, char *string4)
 			if(rotatorN > n ) {
 				rotateSwap = rotatorN - n - 1;
 				string4[i] = 'A' + rotateSwap;
-			}
-			else {
+			} else {
 				string4[i] += rotatorN;
 			}	
 		} 
 	}
+	
 	return string4;
 }
 
@@ -32,10 +32,10 @@ char *cezar_decrypt(int rotatorN, char *string4)
 			if	(rotatorN > n) {
 				rotateSwap = rotatorN - n - 1;
 				string4[i] = 'z' - rotateSwap;
-			}
-			else
+			} else
 				string4[i] -= rotatorN;
 		}
 	}
+	
 	return string4;
 }

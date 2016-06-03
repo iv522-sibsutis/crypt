@@ -9,8 +9,8 @@ char* vijinera_encrypt(char key[], char* text)
 	int cur = 0;
 	int i;
 	int l = strlen(c); 
-	for(i=0; i<l; i++){  
-		if ((c[i] >= 'A')&&(c[i] <= 'z')){
+	for(i=0; i<l; i++) {  
+		if ((c[i] >= 'A')&&(c[i] <= 'z')) {
 			if ( (c[i]+key[cur]-'A') <= 'z') 
 			c[i] = c[i]+key[cur]-'A';
 		else
@@ -22,8 +22,7 @@ char* vijinera_encrypt(char key[], char* text)
 		}
 	}
 	
-	return c; 
-        
+	return c;      
 }
    
    
