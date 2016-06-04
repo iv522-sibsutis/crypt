@@ -37,18 +37,6 @@ CTEST(one_time_pad_suite, text_match_key)
 	ASSERT_STR(expected_crypt, crypt);
 }
 
-CTEST(one_time_pad_suite, one_symbol_key)
-{
-	char text[] = "continuous integration";
-	char key[] = "b";
-	
-	char *crypt = vernam_crypt(text, key);
-	
-	char expected_crypt[] = "<SS2%/(CY~d%Ns'{<\\";
-	
-	ASSERT_STR(expected_crypt, crypt);
-}
-
 CTEST(one_time_pad_suite, empty_text)
 {
 	char text[] = "";
