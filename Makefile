@@ -13,6 +13,10 @@ DEPENDS = $(OBJ_SRC:.o=.d) $(OBJ_TEST:.o=.d)
 .PHONY: make
 make: dirs
 	@$(MAKE) all
+
+.PHONY: test_run
+test_run: 
+	$(BIN)/crypt_test
 	
 .PHONY: dirs
 dirs:
