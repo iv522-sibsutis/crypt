@@ -22,8 +22,8 @@ dirs:
 
 .PHONY: clean
 clean:
-	rm bin
-	rm obj
+	rm -r bin
+	rm -r obj
 	
 .PHONY: all
 all: $(BIN)/crypt $(BIN)/crypt_test
