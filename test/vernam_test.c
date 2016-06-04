@@ -68,3 +68,71 @@ CTEST(one_time_pad_suite, empty_key)
 	
 	ASSERT_NULL(crypt);
 }
+
+CTEST(vernam_decrypt_suite, decrypt_test)
+{
+	char crypt[] = "&NLMOPXl@Ghi54?2_{";
+	char key[] = "one-time pad;e(|5H]]L(iW'";
+	
+	char *text = vernam_decrypt(crypt, key);
+	
+	char expected_text[] = "I want to decipher this text";
+	
+	ASSERT_STR(expected_text, text);
+}
+
+CTEST(vernam_decrypt_suite, disparity_length)
+{
+	char crypt[] = "&NLMOPXl@Ghi54?2_{";
+	char key[] = "one-time pad";
+	
+	char *text = vernam_decrypt(crypt, key);
+	
+	ASSERT_NULL(text);
+}
+
+CTEST(vernam_decrypt_suite, text_was_match_key)
+{
+	char crypt[] = "?????";
+	char key[] = "Hv`mssndmbqxossgdsdws";
+	
+	char *text = vernam_decrypt(crypt, key);
+	
+	char expected_text[] = "I want to encrypt the text";
+	
+	ASSERT_STR(expected_text, text);
+}
+
+CTEST(vernam_decrypt_suite, empty_text)
+{
+	char crypt[] = "";
+	char key[] = "empty text";
+	
+	char *text = vernam_decrypt(crypt, key);
+	
+	char expected_text[] = "";
+	
+	ASSERT_STR(expected_text, text);
+}
+
+CTEST(vernam_decrypt_suite, empty_key)
+{
+	char crypt[] = "91^A?ggWSU";
+	char key[] = "";
+
+	char *text = vernam_decrypt(crypt, key);
+
+	ASSERT_NULL(text);
+}
+
+CTEST(vernam_decrypt_suite, key_and_text_empty)
+{
+	char crypt[] = "";
+	char key[] = "";
+
+	char *text = vernam_decrypt(crypt, key);
+
+	char expected_text[] = "";
+
+	ASSERT_STR(expected_text, text);
+}
