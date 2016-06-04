@@ -60,3 +60,63 @@ CTEST(vigenere_encrypt_suite, empty_text)
 
 	ASSERT_STR(expected_crypt, crypt);
 }
+
+CTEST(vigenere_decrypt_suite, simple_decrypt)
+{
+	char crypt[] = "lc TO Sk Xlm lc TO";
+	char key[] = "some_text";
+	
+	char *text = vijinera_decrypt(key, crypt);
+	
+	char expected_text[] = "to be or not to be";
+	
+	ASSERT_STR(expected_text, text);
+}
+
+CTEST(vigenere_decrypt_suite, numeric_key)
+{
+	char crypt[] = "c`_X hZnk l^ U_Uemej";
+	char key[] = "1234567890";
+	
+	char *text = vijinera_decrypt(key, crypt);
+	
+	char expected_text[] = "some text to encrypt";
+	
+	ASSERT_STR(expected_text, text);
+}
+
+CTEST(vigenere_decrypt_suite, one_symbol_key)
+{
+	char crypt[] = "GDQD XNT BzM VQHSD zMX SDWS";
+	char key[] = "Z";
+	
+	char *text = vijinera_decrypt(key, crypt);
+	
+	char expected_text[] = "here you can write any text";
+	
+	ASSERT_STR(expected_text, text);
+}
+
+CTEST(vigenere_decrypt_suite, shortest_text)
+{
+	char crypt[] = "dOvd";
+	char key[] = "key";
+	
+	char *text = vijinera_decrypt(key, crypt);
+	
+	char expected_text[] = "text";
+	
+	ASSERT_STR(expected_text, text);
+}
+
+CTEST(vigenere_decrypt_suite, empty_text)
+{
+	char crypt[] = "";
+	char key[] = "some_text";
+	
+	char *text = vijinera_decrypt(key, crypt);
+	
+	char expected_text[] = "";
+	
+	ASSERT_STR(expected_text, text);
+}
