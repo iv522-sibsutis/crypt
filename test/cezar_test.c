@@ -84,3 +84,51 @@ CTEST(caesar_encrypt_suite, empty_text)
 	
 	ASSERT_STR(expected_crypt, crypt);
 }
+
+CTEST(caesar_decrypt_suite, simple_decrypt)
+{
+	char crypt[] = "khoorbzruog";
+	int key = 3;
+	
+	char *text = cezar_decrypt(key, crypt);
+	
+	char expected_text[] = "hello_world";
+	
+	ASSERT_STR(expected_text, text);
+}
+
+CTEST(caesar_decrypt_suite, empty_text)
+{
+	char crypt[] = "";
+	int key = 5;
+	
+	char *text = cezar_decrypt(key, crypt);
+	
+	char expected_text[] = "";
+	
+	ASSERT_STR(expected_text, text);
+}
+
+CTEST(caesar_decrypt_suite, largest_key)
+{
+	char crypt[] = "¢£";
+	int key = 100;
+	
+	char *text = cezar_decrypt(key, crypt);
+	
+	char expected_text[] = "¢£";
+	
+	ASSERT_STR(expected_text, text);
+}
+
+CTEST(caesar_decrypt_suite, key_negative)
+{
+	char crypt[] = "pj~ rzxy sty gj sjlfyn{j";
+	int key = -5;
+	
+	char *text = cezar_decrypt(key, crypt);
+	
+	char expected_text[] = "uo~ w}~ xy~ lo xoqk~s{o";
+	
+	ASSERT_STR(expected_text, text);
+}
