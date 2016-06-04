@@ -37,6 +37,8 @@ char *vernam_crypt(char *text, char *key)
 	int i = 0;
 	int size = strlen(text);
 	
+	if (*text == '\0' || *key == '\0')
+		return NULL;
 	if (strlen(key) < size)
 		key = key_generation(key, size);
 	while (i < size) {
