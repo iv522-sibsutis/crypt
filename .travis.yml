@@ -1,2 +1,2 @@
 language: c
-scrypt: make && make test_run
+script: make && make test_run
